@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Alumni Dashboard</title>
+</head>
+<body>
+    <h1>Welcome, <%= user.username %></h1>
+    <h2>Create a Task</h2>
+    <form action="/alumni-dashboard" method="POST">
+        <label for="taskName">Task Name:</label>
+        <input type="text" name="taskName" id="taskName" required>
+        <br>
+        <label for="description">Task Description:</label>
+        <textarea name="description" id="description" required></textarea>
+        <br>
+        <label for="studentId">Assign To:</label>
+        <select name="studentId" id="studentId" required>
+            <% students.forEach(student => { %>
+                <option value="<%= student._id %>"><%= student.username %></option>
+            <% }) %>
+        </select>
+        <br>
+        <button type="submit">Create Task</button>
+    </form>
+
+    <% if (tasks && tasks.length > 0) { %>
+        <h2>Assigned Tasks</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Task Name</th>
+                    <th>Description</th>
+                    <th>Assigned To</th>
+                    <th>Created At</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% tasks.forEach(task => { %>
+                    <tr>
+                        <td><%= task.taskName %></td>
+                        <td><%= task.description %></td>
+                        <td><%= task.assignedTo.username %></td>
+                        <td><%= new Date(task.createdAt).toLocaleString() %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } else { %>
+        <p>No tasks assigned yet.</p>
+    <% } %>
+</body>
+</html>
